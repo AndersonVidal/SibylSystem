@@ -36,7 +36,7 @@ reescrever ou contrariar decisões já aprovadas.
 | Definição de Evento em 1.3 vs regras em 1.6 | Consistente | Regras operacionalizam o conceito sem contradizê-lo |
 | Definição de Tarefa em 1.3 vs regras em 1.6 | Consistente | Status Pendente/Concluída é coerente com "execução e conclusão" |
 | Definição de Meta em 1.3 vs regras em 1.6 | Consistente | Progresso percentual e data-alvo opcional derivam do conceito |
-| Escopo (1.2) vs features no backlog (1.7) | Consistente | 16 features cobrem 100% do escopo, sem adição |
+| Escopo (1.2) vs features no backlog (1.7) | Consistente | 21 features cobrem 100% do escopo, sem adição |
 | Prioridade Should Have de editar/excluir em 1.2 vs 1.7 | Consistente | Classificação idêntica em ambos |
 | Fluxos em 1.4 vs responsabilidades de telas em 1.5 | Consistente | Cada tela suporta os fluxos correspondentes |
 | Dashboard blocos em 1.2 vs regras de bloco em 1.6 | Consistente | 1.6 especifica os critérios sem alterar os blocos de 1.2 |
@@ -452,7 +452,7 @@ O usuário deve passar mais tempo no dashboard (consultando) do que nas telas de
 | F5.4 | Dashboard: Tarefas Atrasadas | E5 | **Must Have** | F3.1, F3.3 |
 | F5.5 | Dashboard: Metas Ativas | E5 | **Must Have** | F4.1, F4.3 |
 
-**Total:** 5 épicos · 16 features · 14 Must Have · 6 Should Have · 0 Could Have.
+**Total:** 5 épicos · 21 features · 15 Must Have · 6 Should Have · 0 Could Have.
 
 ### Ordem de Construção
 
@@ -496,12 +496,12 @@ Nenhuma outra decisão de produto permanece aberta ou pendente no escopo do MVP.
 
 | Item | Status | Justificativa |
 |---|---|---|
-| **Escopo está definido?** | **Sim** | MVP com fronteiras objetivas e verificáveis (16 features, 5 épicos, lista completa de fora do escopo) |
+| **Escopo está definido?** | **Sim** | MVP com fronteiras objetivas e verificáveis (21 features, 5 épicos, lista completa de fora do escopo) |
 | **Conceitos estão definidos?** | **Sim** | Evento, Tarefa e Meta com definição, propósito, limites e guia de classificação |
 | **Fluxos estão definidos?** | **Sim** | 7 fluxos principais com objetivo, gatilho, passos e resultado; análise de frequência e fricção |
 | **Telas estão definidas?** | **Sim** | 5 telas com objetivo, responsabilidades, navegação e papel do dashboard |
 | **Regras funcionais estão definidas?** | **Sim** | Todas as ambiguidades identificadas nas Tasks 1.1–1.5 foram resolvidas na Task 1.6 |
-| **Backlog está definido?** | **Sim** | 16 features priorizadas, com ordem de construção e estratégia de 4 releases |
+| **Backlog está definido?** | **Sim** | 21 features priorizadas, com ordem de construção e estratégia de 4 releases |
 | **Existem bloqueios para iniciar a Fase 2?** | **Não** | Conceitos, regras, telas e backlog estão completos; as únicas pendências são decisões reversíveis documentadas |
 
 ---
@@ -529,7 +529,7 @@ A Fase 2 (Arquitetura) pode ser iniciada com os seguintes insumos disponíveis:
 
 1. Três conceitos de domínio com atributos e regras de negócio.
 2. Cinco telas e estrutura de navegação.
-3. 16 features com prioridade e dependências.
+3. 21 features com prioridade e dependências.
 4. Estratégia de 4 releases com valor incremental.
 5. Regras dos 5 blocos do dashboard com critérios precisos.
 

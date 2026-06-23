@@ -48,7 +48,7 @@ E5 — Dashboard
   F5.5  Bloco: Metas Ativas
 ```
 
-**Total:** 5 épicos · 16 features.
+**Total:** 5 épicos · 21 features.
 
 ---
 
@@ -301,7 +301,7 @@ para uso de longo prazo. Completa todos os Should Haves e encerra o MVP.
 | F5.4 | Dashboard: Tarefas Atrasadas | **Must Have** | Priorização do urgente; bloco de decisão central |
 | F5.5 | Dashboard: Metas Ativas | **Must Have** | Objetivos visíveis; completa os 5 blocos |
 
-**Resumo:** 14 Must Have · 6 Should Have · 0 Could Have no escopo do MVP.
+**Resumo:** 15 Must Have · 6 Should Have · 0 Could Have no escopo do MVP.
 *(Não há Could Have: o MVP já está no mínimo necessário. Tudo que não entra é Fora do Escopo.)*
 
 ---
@@ -325,7 +325,7 @@ de features faz a mesma coisa.
 **Existe funcionalidade faltando?** Não. Todos os blocos do dashboard e todas as operações dos
 três conceitos estão representados.
 
-**Existe algo que deveria ser removido?** Não. As 16 features rastreiam-se ao escopo da Task
+**Existe algo que deveria ser removido?** Não. As 21 features rastreiam-se ao escopo da Task
 1.2 e ao valor definido na Task 1.1; nenhuma foi criada além do aprovado.
 
 ---
@@ -333,7 +333,7 @@ três conceitos estão representados.
 ## Conclusão
 
 1. **O backlog representa integralmente o MVP da Task 1.2?**
-   Sim. As 16 features cobrem as 5 áreas do escopo (autenticação, eventos, tarefas, metas,
+   Sim. As 21 features cobrem as 5 áreas do escopo (autenticação, eventos, tarefas, metas,
    dashboard) sem omissão nem adição.
 
 2. **Existe alguma inconsistência com decisões anteriores?**
@@ -342,7 +342,7 @@ três conceitos estão representados.
 
 3. **O backlog está pronto para servir de entrada da Fase 2 (Arquitetura)?**
    Sim. A Fase 2 tem como insumos: os três conceitos com seus atributos e regras, os cinco
-   blocos do dashboard com seus critérios, as cinco telas e sua navegação, e as 16 features com
+   blocos do dashboard com seus critérios, as cinco telas e sua navegação, e as 21 features com
    ordem de construção e prioridades. Todos disponíveis.
 
 4. **Existe alguma decisão de produto ainda pendente?**

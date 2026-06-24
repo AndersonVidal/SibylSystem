@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SibylSystem{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+
+<header>
+    <a class="site-title" href="{% url 'dashboard:index' %}">SibylSystem</a>
+    <nav>
+        <a href="{% url 'dashboard:index' %}" {% if active_nav == 'dashboard' %}class="active"{% endif %}>Dashboard</a>
+        <a href="{% url 'events:index' %}"   {% if active_nav == 'events'    %}class="active"{% endif %}>Eventos</a>
+        <a href="{% url 'tasks:index' %}"    {% if active_nav == 'tasks'     %}class="active"{% endif %}>Tarefas</a>
+        <a href="{% url 'goals:index' %}"    {% if active_nav == 'goals'     %}class="active"{% endif %}>Metas</a>
+        <span class="nav-logout">
+            <a href="#">Logout</a>
+        </span>
+    </nav>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<script src="{% static 'js/htmx.min.js' %}"></script>
+</body>
+</html>

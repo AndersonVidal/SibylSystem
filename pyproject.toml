@@ -1,0 +1,29 @@
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+exclude = [
+    ".git",
+    "__pycache__",
+    "venv",
+]
+
+[tool.ruff.lint]
+# E/W: pycodestyle  F: Pyflakes  I: isort
+select = ["E", "F", "I", "W"]
+# E501 delegado ao Black
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# Migrations são geradas automaticamente; importações podem ser não-convencionais
+"*/migrations/*.py" = ["I"]
+
+[tool.black]
+line-length = 88
+target-version = ["py312"]
+exclude = '''
+/(
+    venv
+  | \.git
+  | __pycache__
+)/
+'''

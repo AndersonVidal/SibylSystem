@@ -216,3 +216,45 @@ main {
     padding: 0.55rem 1rem;
     font-size: 0.95rem;
 }
+
+/* ── Card ───────────────────────────────────────────── */
+
+.card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ── Form row (campos inline) ───────────────────────── */
+
+.form-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.form-group--grow {
+    flex: 1 1 200px;
+}
+
+.form-group--action {
+    flex-shrink: 0;
+}
+
+.form-label-hidden {
+    visibility: hidden;
+    font-size: 0.875rem;
+}
+
+.form-error {
+    color: #c0392b;
+    font-size: 0.8rem;
+    margin-top: 0.15rem;
+}
+
+.form-group {
+    margin-bottom: 0;
+}

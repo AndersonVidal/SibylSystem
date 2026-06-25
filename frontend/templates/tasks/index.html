@@ -4,8 +4,27 @@
 
 {% block content %}
 <h1 class="page-title">Tarefas</h1>
-<div class="placeholder-box">
-    A listagem, criação, conclusão, edição e exclusão de tarefas serão implementadas
-    nas tasks T2.1–T2.4 e T6.2.
+
+<div class="card">
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group form-group--grow">
+                <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                <p class="form-error">{{ form.title.errors|first }}</p>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.due_date.id_for_label }}">{{ form.due_date.label }}</label>
+                {{ form.due_date }}
+            </div>
+            <div class="form-group form-group--action">
+                <label class="form-label-hidden">Ação</label>
+                <button type="submit" class="btn btn-primary">Adicionar</button>
+            </div>
+        </div>
+    </form>
 </div>
 {% endblock %}

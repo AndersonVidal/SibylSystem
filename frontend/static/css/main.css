@@ -63,11 +63,19 @@ nav a.active {
     margin-left: auto;
 }
 
-.nav-logout a {
+.nav-logout-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
     color: #f0a0a0;
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    transition: background 0.15s, color 0.15s;
 }
 
-.nav-logout a:hover {
+.nav-logout-btn:hover {
     background: rgba(255, 80, 80, 0.15);
     color: #ffb0b0;
 }

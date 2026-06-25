@@ -16,9 +16,10 @@
         <a href="{% url 'events:index' %}"   {% if active_nav == 'events'    %}class="active"{% endif %}>Eventos</a>
         <a href="{% url 'tasks:index' %}"    {% if active_nav == 'tasks'     %}class="active"{% endif %}>Tarefas</a>
         <a href="{% url 'goals:index' %}"    {% if active_nav == 'goals'     %}class="active"{% endif %}>Metas</a>
-        <span class="nav-logout">
-            <a href="#">Logout</a>
-        </span>
+        <form class="nav-logout" method="post" action="{% url 'accounts:logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="nav-logout-btn">Logout</button>
+        </form>
     </nav>
 </header>
 

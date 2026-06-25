@@ -132,3 +132,79 @@ main {
     color: #555;
     font-size: 0.95rem;
 }
+
+/* ── Login ──────────────────────────────────────────── */
+
+.login-page {
+    justify-content: center;
+    align-items: center;
+}
+
+.login-main {
+    width: 100%;
+    max-width: 360px;
+    padding: 1.5rem;
+}
+
+.login-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 2rem;
+}
+
+.login-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    text-align: center;
+    margin-bottom: 1.75rem;
+    letter-spacing: 0.02em;
+}
+
+.login-error {
+    background: #fdf0f0;
+    border: 1px solid #f5c6c6;
+    border-radius: 4px;
+    color: #c0392b;
+    font-size: 0.875rem;
+    padding: 0.6rem 0.85rem;
+    margin-bottom: 1rem;
+}
+
+/* ── Formulários ────────────────────────────────────── */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-group input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    padding: 0.45rem 0.65rem;
+    width: 100%;
+    transition: border-color 0.15s;
+}
+
+.form-group input:focus {
+    border-color: #1a1a2e;
+    outline: none;
+}
+
+.btn-full {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.55rem 1rem;
+    font-size: 0.95rem;
+}

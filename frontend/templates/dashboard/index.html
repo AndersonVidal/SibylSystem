@@ -4,8 +4,22 @@
 
 {% block content %}
 <h1 class="page-title">Dashboard</h1>
-<div class="placeholder-box">
-    Os blocos do dashboard (Tarefas Atrasadas, Eventos de Hoje, Tarefas Pendentes,
-    Próximos Eventos e Metas Ativas) serão implementados nas tasks T5.1–T5.6.
-</div>
+
+<section class="dashboard-block dashboard-block--overdue">
+    <h2 class="block-title">Tarefas Atrasadas</h2>
+    {% if overdue_tasks %}
+    <ul class="task-list">
+        {% for task in overdue_tasks %}
+        <li class="task-item">
+            <span class="task-title">{{ task.title }}</span>
+            <span class="task-meta">
+                <span class="task-due">{{ task.due_date|date:"d/m/Y" }}</span>
+            </span>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="empty-state">Nenhuma tarefa atrasada.</p>
+    {% endif %}
+</section>
 {% endblock %}

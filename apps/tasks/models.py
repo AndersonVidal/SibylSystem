@@ -1,13 +1,12 @@
-from datetime import date
-
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 
 class TaskQuerySet(models.QuerySet):
     def overdue(self, today=None):
         if today is None:
-            today = date.today()
+            today = timezone.localdate()
         return self.filter(
             status=Task.Status.PENDING,
             due_date__isnull=False,
@@ -16,7 +15,7 @@ class TaskQuerySet(models.QuerySet):
 
     def pending_not_overdue(self, today=None):
         if today is None:
-            today = date.today()
+            today = timezone.localdate()
         return self.filter(status=Task.Status.PENDING).filter(
             models.Q(due_date__isnull=True) | models.Q(due_date__gte=today)
         )
@@ -54,5 +53,5 @@ class Task(models.Model):
         return (
             self.status == self.Status.PENDING
             and self.due_date is not None
-            and self.due_date < date.today()
+            and self.due_date < timezone.localdate()
         )

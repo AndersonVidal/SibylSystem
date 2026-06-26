@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 
 from apps.tasks.forms import TaskForm
 from apps.tasks.models import Task
@@ -25,3 +26,12 @@ def index(request):
         "tasks/index.html",
         {"active_nav": "tasks", "form": form, "tasks": tasks},
     )
+
+
+@login_required
+@require_POST
+def complete(request, pk):
+    task = get_object_or_404(Task, pk=pk, owner=request.user)
+    task.status = Task.Status.COMPLETED
+    task.save()
+    return redirect("tasks:index")

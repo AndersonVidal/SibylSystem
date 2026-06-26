@@ -38,6 +38,7 @@
             <span class="task-due">{{ task.due_date|date:"d/m/Y" }}</span>
             {% endif %}
             <span class="task-status task-status--{{ task.status|lower }}">{{ task.get_status_display }}</span>
+            {% if task.is_overdue %}<span class="task-overdue">Atrasada</span>{% endif %}
             {% if task.status == "PENDING" %}
             <form method="post" action="{% url 'tasks:complete' task.pk %}">
                 {% csrf_token %}

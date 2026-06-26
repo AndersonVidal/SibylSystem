@@ -258,3 +258,61 @@ main {
 .form-group {
     margin-bottom: 0;
 }
+
+/* ── Lista de itens ─────────────────────────────────── */
+
+.task-list {
+    list-style: none;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.task-item:last-child {
+    border-bottom: none;
+}
+
+.task-title {
+    flex: 1;
+    font-size: 0.95rem;
+}
+
+.task-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.task-due {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.task-status {
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.task-status--completed {
+    background: #f0f0f0;
+    color: #888;
+}
+
+/* ── Estado vazio ───────────────────────────────────── */
+
+.empty-state {
+    color: #888;
+    font-size: 0.95rem;
+    padding: 1rem 0;
+}

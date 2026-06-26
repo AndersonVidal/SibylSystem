@@ -27,4 +27,22 @@
         </div>
     </form>
 </div>
+
+{% if tasks %}
+<ul class="task-list">
+    {% for task in tasks %}
+    <li class="task-item">
+        <span class="task-title">{{ task.title }}</span>
+        <span class="task-meta">
+            {% if task.due_date %}
+            <span class="task-due">{{ task.due_date|date:"d/m/Y" }}</span>
+            {% endif %}
+            <span class="task-status task-status--{{ task.status|lower }}">{{ task.get_status_display }}</span>
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="empty-state">Nenhuma tarefa cadastrada.</p>
+{% endif %}
 {% endblock %}

@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
 from django.shortcuts import redirect, render
 
 from apps.tasks.forms import TaskForm
+from apps.tasks.models import Task
 
 
 @login_required
@@ -15,4 +17,11 @@ def index(request):
             return redirect("tasks:index")
     else:
         form = TaskForm()
-    return render(request, "tasks/index.html", {"active_nav": "tasks", "form": form})
+    tasks = Task.objects.filter(owner=request.user).order_by(
+        F("due_date").asc(nulls_last=True), "title"
+    )
+    return render(
+        request,
+        "tasks/index.html",
+        {"active_nav": "tasks", "form": form, "tasks": tasks},
+    )

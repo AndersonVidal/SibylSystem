@@ -6,4 +6,5 @@ app_name = "tasks"
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("<int:pk>/complete/", views.complete, name="complete"),
 ]

@@ -309,6 +309,11 @@ main {
     color: #888;
 }
 
+.btn-sm {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.8rem;
+}
+
 /* ── Estado vazio ───────────────────────────────────── */
 
 .empty-state {

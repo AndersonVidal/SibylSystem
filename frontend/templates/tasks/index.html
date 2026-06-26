@@ -38,6 +38,12 @@
             <span class="task-due">{{ task.due_date|date:"d/m/Y" }}</span>
             {% endif %}
             <span class="task-status task-status--{{ task.status|lower }}">{{ task.get_status_display }}</span>
+            {% if task.status == "PENDING" %}
+            <form method="post" action="{% url 'tasks:complete' task.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-secondary btn-sm">Concluir</button>
+            </form>
+            {% endif %}
         </span>
     </li>
     {% endfor %}

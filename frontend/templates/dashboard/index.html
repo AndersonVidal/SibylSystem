@@ -22,4 +22,28 @@
     <p class="empty-state">Nenhuma tarefa atrasada.</p>
     {% endif %}
 </section>
+
+<section class="dashboard-block dashboard-block--pending">
+    <h2 class="block-title">Tarefas Pendentes</h2>
+    {% if pending_tasks %}
+    <ul class="task-list">
+        {% for task in pending_tasks %}
+        <li class="task-item">
+            <span class="task-title">{{ task.title }}</span>
+            <span class="task-meta">
+                {% if task.due_date %}
+                <span class="task-due">{{ task.due_date|date:"d/m/Y" }}</span>
+                {% endif %}
+                <form method="post" action="{% url 'tasks:complete' task.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary btn-sm">Concluir</button>
+                </form>
+            </span>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="empty-state">Nenhuma tarefa pendente.</p>
+    {% endif %}
+</section>
 {% endblock %}

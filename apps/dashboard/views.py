@@ -7,8 +7,13 @@ from apps.tasks.models import Task
 @login_required
 def index(request):
     overdue_tasks = Task.objects.filter(owner=request.user).overdue()
+    pending_tasks = Task.objects.filter(owner=request.user).pending_not_overdue()
     return render(
         request,
         "dashboard/index.html",
-        {"active_nav": "dashboard", "overdue_tasks": overdue_tasks},
+        {
+            "active_nav": "dashboard",
+            "overdue_tasks": overdue_tasks,
+            "pending_tasks": pending_tasks,
+        },
     )

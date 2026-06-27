@@ -12,6 +12,11 @@ def index(request):
     today_events = (
         Event.objects.filter(owner=request.user).today().order_by("time", "title")
     )
+    upcoming_events = (
+        Event.objects.filter(owner=request.user)
+        .upcoming()
+        .order_by("date", "time", "title")
+    )
     return render(
         request,
         "dashboard/index.html",
@@ -20,5 +25,6 @@ def index(request):
             "overdue_tasks": overdue_tasks,
             "pending_tasks": pending_tasks,
             "today_events": today_events,
+            "upcoming_events": upcoming_events,
         },
     )

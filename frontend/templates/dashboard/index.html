@@ -66,4 +66,25 @@
     <p class="empty-state">Nenhum evento para hoje.</p>
     {% endif %}
 </section>
+
+<section class="dashboard-block dashboard-block--upcoming-events">
+    <h2 class="block-title">Próximos Eventos</h2>
+    {% if upcoming_events %}
+    <ul class="task-list">
+        {% for event in upcoming_events %}
+        <li class="task-item">
+            <span class="task-title">{{ event.title }}</span>
+            <span class="task-meta">
+                <span class="task-due">{{ event.date|date:"d/m/Y" }}</span>
+                {% if event.time %}
+                <span class="task-due">{{ event.time|time:"H:i" }}</span>
+                {% endif %}
+            </span>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="empty-state">Nenhum próximo evento.</p>
+    {% endif %}
+</section>
 {% endblock %}

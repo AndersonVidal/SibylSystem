@@ -342,6 +342,10 @@ main {
     border-left: 3px solid #1a7a4a;
 }
 
+.dashboard-block--upcoming-events {
+    border-left: 3px solid #7d3c98;
+}
+
 .block-title {
     font-size: 0.8rem;
     font-weight: 700;

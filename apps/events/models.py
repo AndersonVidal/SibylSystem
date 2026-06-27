@@ -9,6 +9,11 @@ class EventQuerySet(models.QuerySet):
             today = timezone.localdate()
         return self.filter(date=today)
 
+    def upcoming(self, today=None):
+        if today is None:
+            today = timezone.localdate()
+        return self.filter(date__gt=today)
+
 
 class Event(models.Model):
     objects = EventQuerySet.as_manager()

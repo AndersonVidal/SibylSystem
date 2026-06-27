@@ -46,4 +46,24 @@
     <p class="empty-state">Nenhuma tarefa pendente.</p>
     {% endif %}
 </section>
+
+<section class="dashboard-block dashboard-block--events-today">
+    <h2 class="block-title">Eventos de Hoje</h2>
+    {% if today_events %}
+    <ul class="task-list">
+        {% for event in today_events %}
+        <li class="task-item">
+            <span class="task-title">{{ event.title }}</span>
+            {% if event.time %}
+            <span class="task-meta">
+                <span class="task-due">{{ event.time|time:"H:i" }}</span>
+            </span>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="empty-state">Nenhum evento para hoje.</p>
+    {% endif %}
+</section>
 {% endblock %}

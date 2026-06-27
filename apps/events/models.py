@@ -1,9 +1,13 @@
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 
 class EventQuerySet(models.QuerySet):
-    pass
+    def today(self, today=None):
+        if today is None:
+            today = timezone.localdate()
+        return self.filter(date=today)
 
 
 class Event(models.Model):

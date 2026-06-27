@@ -338,6 +338,10 @@ main {
     border-left: 3px solid #2471a3;
 }
 
+.dashboard-block--events-today {
+    border-left: 3px solid #1a7a4a;
+}
+
 .block-title {
     font-size: 0.8rem;
     font-weight: 700;

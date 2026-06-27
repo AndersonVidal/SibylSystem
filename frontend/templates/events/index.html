@@ -34,4 +34,22 @@
         </div>
     </form>
 </div>
+
+{% if events %}
+<ul class="task-list">
+    {% for event in events %}
+    <li class="task-item">
+        <span class="task-title">{{ event.title }}</span>
+        <span class="task-meta">
+            <span class="task-due">{{ event.date|date:"d/m/Y" }}</span>
+            {% if event.time %}
+            <span class="task-due">{{ event.time|time:"H:i" }}</span>
+            {% endif %}
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="empty-state">Nenhum evento cadastrado.</p>
+{% endif %}
 {% endblock %}

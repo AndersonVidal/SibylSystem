@@ -4,8 +4,34 @@
 
 {% block content %}
 <h1 class="page-title">Metas</h1>
-<div class="placeholder-box">
-    A listagem, criação, atualização de progresso, edição e exclusão de metas
-    serão implementadas nas tasks T4.1–T4.4 e T6.3.
+
+<div class="card">
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group form-group--grow">
+                <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                <p class="form-error">{{ form.title.errors|first }}</p>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.progress.id_for_label }}">{{ form.progress.label }}</label>
+                {{ form.progress }}
+                {% if form.progress.errors %}
+                <p class="form-error">{{ form.progress.errors|first }}</p>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.target_date.id_for_label }}">{{ form.target_date.label }}</label>
+                {{ form.target_date }}
+            </div>
+            <div class="form-group form-group--action">
+                <label class="form-label-hidden">Ação</label>
+                <button type="submit" class="btn btn-primary">Adicionar</button>
+            </div>
+        </div>
+    </form>
 </div>
 {% endblock %}

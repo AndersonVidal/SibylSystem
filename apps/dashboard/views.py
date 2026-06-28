@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
 from django.shortcuts import render
 
 from apps.events.models import Event
+from apps.goals.models import Goal
 from apps.tasks.models import Task
 
 
@@ -17,6 +19,11 @@ def index(request):
         .upcoming()
         .order_by("date", "time", "title")
     )
+    active_goals = (
+        Goal.objects.filter(owner=request.user)
+        .active()
+        .order_by("progress", F("target_date").asc(nulls_last=True), "title")
+    )
     return render(
         request,
         "dashboard/index.html",
@@ -26,5 +33,6 @@ def index(request):
             "pending_tasks": pending_tasks,
             "today_events": today_events,
             "upcoming_events": upcoming_events,
+            "active_goals": active_goals,
         },
     )

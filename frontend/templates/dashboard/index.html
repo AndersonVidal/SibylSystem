@@ -87,4 +87,25 @@
     <p class="empty-state">Nenhum próximo evento.</p>
     {% endif %}
 </section>
+
+<section class="dashboard-block dashboard-block--active-goals">
+    <h2 class="block-title">Metas Ativas</h2>
+    {% if active_goals %}
+    <ul class="task-list">
+        {% for goal in active_goals %}
+        <li class="task-item">
+            <span class="task-title">{{ goal.title }}</span>
+            <span class="task-meta">
+                <span class="task-due">{{ goal.progress }}%</span>
+                {% if goal.target_date %}
+                <span class="task-due">{{ goal.target_date|date:"d/m/Y" }}</span>
+                {% endif %}
+            </span>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="empty-state">Nenhuma meta ativa.</p>
+    {% endif %}
+</section>
 {% endblock %}

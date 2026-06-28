@@ -4,7 +4,8 @@ from django.db import models
 
 
 class GoalQuerySet(models.QuerySet):
-    pass
+    def active(self):
+        return self.filter(progress__lt=100)
 
 
 class Goal(models.Model):

@@ -355,6 +355,10 @@ main {
     border-left: 3px solid #7d3c98;
 }
 
+.dashboard-block--active-goals {
+    border-left: 3px solid #d4820a;
+}
+
 .block-title {
     font-size: 0.8rem;
     font-weight: 700;

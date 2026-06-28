@@ -34,4 +34,22 @@
         </div>
     </form>
 </div>
+
+{% if goals %}
+<ul class="task-list">
+    {% for goal in goals %}
+    <li class="task-item">
+        <span class="task-title">{{ goal.title }}</span>
+        <span class="task-meta">
+            <span class="task-due">{{ goal.progress }}%</span>
+            {% if goal.target_date %}
+            <span class="task-due">{{ goal.target_date|date:"d/m/Y" }}</span>
+            {% endif %}
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="empty-state">Nenhuma meta cadastrada.</p>
+{% endif %}
 {% endblock %}

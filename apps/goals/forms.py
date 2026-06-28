@@ -15,3 +15,12 @@ class GoalForm(forms.ModelForm):
             "progress": "Progresso (%)",
             "target_date": "Data-alvo (opcional)",
         }
+
+
+class GoalProgressForm(forms.ModelForm):
+    class Meta:
+        model = Goal
+        fields = ["progress"]
+        labels = {
+            "progress": "Progresso (%)",
+        }

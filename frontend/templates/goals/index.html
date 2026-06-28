@@ -45,6 +45,12 @@
             {% if goal.target_date %}
             <span class="task-due">{{ goal.target_date|date:"d/m/Y" }}</span>
             {% endif %}
+            <form method="post" action="{% url 'goals:update_progress' goal.pk %}">
+                {% csrf_token %}
+                <input type="number" name="progress" min="0" max="100"
+                       value="{{ goal.progress }}" class="progress-input">
+                <button type="submit" class="btn btn-secondary btn-sm">Atualizar</button>
+            </form>
         </span>
     </li>
     {% endfor %}

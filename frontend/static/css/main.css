@@ -261,11 +261,11 @@ main {
 
 /* ── Lista de itens ─────────────────────────────────── */
 
-.task-list {
+.entity-list {
     list-style: none;
 }
 
-.task-item {
+.entity-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -274,23 +274,23 @@ main {
     border-bottom: 1px solid #eee;
 }
 
-.task-item:last-child {
+.entity-item:last-child {
     border-bottom: none;
 }
 
-.task-title {
+.entity-title {
     flex: 1;
     font-size: 0.95rem;
 }
 
-.task-meta {
+.entity-meta {
     display: flex;
     align-items: center;
     gap: 0.75rem;
     flex-shrink: 0;
 }
 
-.task-due {
+.entity-date {
     font-size: 0.85rem;
     color: #666;
 }

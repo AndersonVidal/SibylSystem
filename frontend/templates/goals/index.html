@@ -36,14 +36,14 @@
 </div>
 
 {% if goals %}
-<ul class="task-list">
+<ul class="entity-list">
     {% for goal in goals %}
-    <li class="task-item">
-        <span class="task-title">{{ goal.title }}</span>
-        <span class="task-meta">
-            <span class="task-due">{{ goal.progress }}%</span>
+    <li class="entity-item">
+        <span class="entity-title">{{ goal.title }}</span>
+        <span class="entity-meta">
+            <span class="entity-date">{{ goal.progress }}%</span>
             {% if goal.target_date %}
-            <span class="task-due">{{ goal.target_date|date:"d/m/Y" }}</span>
+            <span class="entity-date">{{ goal.target_date|date:"d/m/Y" }}</span>
             {% endif %}
             <form method="post" action="{% url 'goals:update_progress' goal.pk %}">
                 {% csrf_token %}

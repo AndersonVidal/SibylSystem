@@ -29,13 +29,13 @@
 </div>
 
 {% if tasks %}
-<ul class="task-list">
+<ul class="entity-list">
     {% for task in tasks %}
-    <li class="task-item">
-        <span class="task-title">{{ task.title }}</span>
-        <span class="task-meta">
+    <li class="entity-item">
+        <span class="entity-title">{{ task.title }}</span>
+        <span class="entity-meta">
             {% if task.due_date %}
-            <span class="task-due">{{ task.due_date|date:"d/m/Y" }}</span>
+            <span class="entity-date">{{ task.due_date|date:"d/m/Y" }}</span>
             {% endif %}
             <span class="task-status task-status--{{ task.status|lower }}">{{ task.get_status_display }}</span>
             {% if task.is_overdue %}<span class="task-overdue">Atrasada</span>{% endif %}

@@ -36,14 +36,14 @@
 </div>
 
 {% if events %}
-<ul class="task-list">
+<ul class="entity-list">
     {% for event in events %}
-    <li class="task-item">
-        <span class="task-title">{{ event.title }}</span>
-        <span class="task-meta">
-            <span class="task-due">{{ event.date|date:"d/m/Y" }}</span>
+    <li class="entity-item">
+        <span class="entity-title">{{ event.title }}</span>
+        <span class="entity-meta">
+            <span class="entity-date">{{ event.date|date:"d/m/Y" }}</span>
             {% if event.time %}
-            <span class="task-due">{{ event.time|time:"H:i" }}</span>
+            <span class="entity-date">{{ event.time|time:"H:i" }}</span>
             {% endif %}
         </span>
     </li>

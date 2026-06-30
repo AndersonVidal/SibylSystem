@@ -8,12 +8,12 @@
 <section class="dashboard-block dashboard-block--overdue">
     <h2 class="block-title">Tarefas Atrasadas</h2>
     {% if overdue_tasks %}
-    <ul class="task-list">
+    <ul class="entity-list">
         {% for task in overdue_tasks %}
-        <li class="task-item">
-            <span class="task-title">{{ task.title }}</span>
-            <span class="task-meta">
-                <span class="task-due">{{ task.due_date|date:"d/m/Y" }}</span>
+        <li class="entity-item">
+            <span class="entity-title">{{ task.title }}</span>
+            <span class="entity-meta">
+                <span class="entity-date">{{ task.due_date|date:"d/m/Y" }}</span>
             </span>
         </li>
         {% endfor %}
@@ -26,13 +26,13 @@
 <section class="dashboard-block dashboard-block--pending">
     <h2 class="block-title">Tarefas Pendentes</h2>
     {% if pending_tasks %}
-    <ul class="task-list">
+    <ul class="entity-list">
         {% for task in pending_tasks %}
-        <li class="task-item">
-            <span class="task-title">{{ task.title }}</span>
-            <span class="task-meta">
+        <li class="entity-item">
+            <span class="entity-title">{{ task.title }}</span>
+            <span class="entity-meta">
                 {% if task.due_date %}
-                <span class="task-due">{{ task.due_date|date:"d/m/Y" }}</span>
+                <span class="entity-date">{{ task.due_date|date:"d/m/Y" }}</span>
                 {% endif %}
                 <form method="post" action="{% url 'tasks:complete' task.pk %}">
                     {% csrf_token %}
@@ -50,13 +50,13 @@
 <section class="dashboard-block dashboard-block--events-today">
     <h2 class="block-title">Eventos de Hoje</h2>
     {% if today_events %}
-    <ul class="task-list">
+    <ul class="entity-list">
         {% for event in today_events %}
-        <li class="task-item">
-            <span class="task-title">{{ event.title }}</span>
+        <li class="entity-item">
+            <span class="entity-title">{{ event.title }}</span>
             {% if event.time %}
-            <span class="task-meta">
-                <span class="task-due">{{ event.time|time:"H:i" }}</span>
+            <span class="entity-meta">
+                <span class="entity-date">{{ event.time|time:"H:i" }}</span>
             </span>
             {% endif %}
         </li>
@@ -70,14 +70,14 @@
 <section class="dashboard-block dashboard-block--upcoming-events">
     <h2 class="block-title">Próximos Eventos</h2>
     {% if upcoming_events %}
-    <ul class="task-list">
+    <ul class="entity-list">
         {% for event in upcoming_events %}
-        <li class="task-item">
-            <span class="task-title">{{ event.title }}</span>
-            <span class="task-meta">
-                <span class="task-due">{{ event.date|date:"d/m/Y" }}</span>
+        <li class="entity-item">
+            <span class="entity-title">{{ event.title }}</span>
+            <span class="entity-meta">
+                <span class="entity-date">{{ event.date|date:"d/m/Y" }}</span>
                 {% if event.time %}
-                <span class="task-due">{{ event.time|time:"H:i" }}</span>
+                <span class="entity-date">{{ event.time|time:"H:i" }}</span>
                 {% endif %}
             </span>
         </li>
@@ -91,14 +91,14 @@
 <section class="dashboard-block dashboard-block--active-goals">
     <h2 class="block-title">Metas Ativas</h2>
     {% if active_goals %}
-    <ul class="task-list">
+    <ul class="entity-list">
         {% for goal in active_goals %}
-        <li class="task-item">
-            <span class="task-title">{{ goal.title }}</span>
-            <span class="task-meta">
-                <span class="task-due">{{ goal.progress }}%</span>
+        <li class="entity-item">
+            <span class="entity-title">{{ goal.title }}</span>
+            <span class="entity-meta">
+                <span class="entity-date">{{ goal.progress }}%</span>
                 {% if goal.target_date %}
-                <span class="task-due">{{ goal.target_date|date:"d/m/Y" }}</span>
+                <span class="entity-date">{{ goal.target_date|date:"d/m/Y" }}</span>
                 {% endif %}
             </span>
         </li>

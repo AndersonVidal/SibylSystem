@@ -1,6 +1,8 @@
 import datetime
 from unittest.mock import patch
 
+from django.urls import reverse
+
 from apps.tasks.models import Task
 from tests.base import SibylTestCase
 
@@ -114,3 +116,99 @@ class TaskIsOverdueTest(SibylTestCase):
         task = self._task(due_date=YESTERDAY, status=Task.Status.COMPLETED)
         with patch("apps.tasks.models.timezone.localdate", return_value=FIXED_TODAY):
             self.assertFalse(task.is_overdue)
+
+
+class TaskEditTest(SibylTestCase):
+    def setUp(self):
+        self.user = self.make_user()
+        self.login(self.user)
+        self.task = Task.objects.create(
+            title="Original",
+            owner=self.user,
+            due_date=datetime.date(2026, 3, 1),
+        )
+
+    def test_get_returns_200(self):
+        response = self.client.get(reverse("tasks:edit", args=[self.task.pk]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_form_prefilled_with_current_data(self):
+        response = self.client.get(reverse("tasks:edit", args=[self.task.pk]))
+        self.assertEqual(response.context["form"]["title"].value(), "Original")
+        self.assertEqual(
+            response.context["form"]["due_date"].value(), datetime.date(2026, 3, 1)
+        )
+
+    def test_post_valid_updates_title(self):
+        self.client.post(
+            reverse("tasks:edit", args=[self.task.pk]),
+            {"title": "Atualizado", "due_date": ""},
+        )
+        self.task.refresh_from_db()
+        self.assertEqual(self.task.title, "Atualizado")
+
+    def test_post_valid_updates_due_date(self):
+        self.client.post(
+            reverse("tasks:edit", args=[self.task.pk]),
+            {"title": "Original", "due_date": "2026-06-01"},
+        )
+        self.task.refresh_from_db()
+        self.assertEqual(self.task.due_date, datetime.date(2026, 6, 1))
+
+    def test_post_valid_redirects_to_index(self):
+        response = self.client.post(
+            reverse("tasks:edit", args=[self.task.pk]),
+            {"title": "Atualizado", "due_date": ""},
+        )
+        self.assertRedirects(response, reverse("tasks:index"))
+
+    def test_post_empty_title_returns_200(self):
+        response = self.client.post(
+            reverse("tasks:edit", args=[self.task.pk]),
+            {"title": "", "due_date": ""},
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_empty_title_does_not_save(self):
+        self.client.post(
+            reverse("tasks:edit", args=[self.task.pk]),
+            {"title": "", "due_date": ""},
+        )
+        self.task.refresh_from_db()
+        self.assertEqual(self.task.title, "Original")
+
+    def test_get_other_users_task_returns_404(self):
+        other = self.make_user(username="other")
+        other_task = Task.objects.create(title="Other", owner=other)
+        response = self.client.get(reverse("tasks:edit", args=[other_task.pk]))
+        self.assertEqual(response.status_code, 404)
+
+    def test_post_other_users_task_returns_404(self):
+        other = self.make_user(username="other")
+        other_task = Task.objects.create(title="Other", owner=other)
+        response = self.client.post(
+            reverse("tasks:edit", args=[other_task.pk]),
+            {"title": "Hacked", "due_date": ""},
+        )
+        self.assertEqual(response.status_code, 404)
+        other_task.refresh_from_db()
+        self.assertEqual(other_task.title, "Other")
+
+    def test_edit_does_not_change_status(self):
+        completed = Task.objects.create(
+            title="Concluída", owner=self.user, status=Task.Status.COMPLETED
+        )
+        self.client.post(
+            reverse("tasks:edit", args=[completed.pk]),
+            {"title": "Concluída Editada", "due_date": ""},
+        )
+        completed.refresh_from_db()
+        self.assertEqual(completed.status, Task.Status.COMPLETED)
+
+    def test_edit_does_not_change_owner(self):
+        self.client.post(
+            reverse("tasks:edit", args=[self.task.pk]),
+            {"title": "Atualizado", "due_date": ""},
+        )
+        self.task.refresh_from_db()
+        self.assertEqual(self.task.owner, self.user)

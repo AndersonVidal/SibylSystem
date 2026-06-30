@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Tarefa — SibylSystem{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Editar Tarefa</h1>
+
+<div class="card">
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-group form-group--grow">
+            <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+            <p class="form-error">{{ form.title.errors|first }}</p>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.due_date.id_for_label }}">{{ form.due_date.label }}</label>
+            {{ form.due_date }}
+        </div>
+        <div class="form-row" style="margin-top: 1.25rem;">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a href="{% url 'tasks:index' %}" class="btn btn-secondary">Voltar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

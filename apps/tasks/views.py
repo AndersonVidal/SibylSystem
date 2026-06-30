@@ -29,6 +29,21 @@ def index(request):
 
 
 @login_required
+def edit(request, pk):
+    task = get_object_or_404(Task, pk=pk, owner=request.user)
+    if request.method == "POST":
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect("tasks:index")
+    else:
+        form = TaskForm(instance=task)
+    return render(
+        request, "tasks/edit.html", {"active_nav": "tasks", "form": form, "task": task}
+    )
+
+
+@login_required
 @require_POST
 def complete(request, pk):
     task = get_object_or_404(Task, pk=pk, owner=request.user)

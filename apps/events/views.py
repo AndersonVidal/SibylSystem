@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
 from django.shortcuts import redirect, render
 
 from apps.events.forms import EventForm
@@ -16,7 +17,9 @@ def index(request):
             return redirect("events:index")
     else:
         form = EventForm()
-    events = Event.objects.filter(owner=request.user).order_by("date", "time", "title")
+    events = Event.objects.filter(owner=request.user).order_by(
+        "date", F("time").asc(nulls_last=True), "title"
+    )
     return render(
         request,
         "events/index.html",

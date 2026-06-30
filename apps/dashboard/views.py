@@ -9,15 +9,25 @@ from apps.tasks.models import Task
 
 @login_required
 def index(request):
-    overdue_tasks = Task.objects.filter(owner=request.user).overdue()
-    pending_tasks = Task.objects.filter(owner=request.user).pending_not_overdue()
+    overdue_tasks = (
+        Task.objects.filter(owner=request.user)
+        .overdue()
+        .order_by(F("due_date").asc(nulls_last=True), "title")
+    )
+    pending_tasks = (
+        Task.objects.filter(owner=request.user)
+        .pending_not_overdue()
+        .order_by(F("due_date").asc(nulls_last=True), "title")
+    )
     today_events = (
-        Event.objects.filter(owner=request.user).today().order_by("time", "title")
+        Event.objects.filter(owner=request.user)
+        .today()
+        .order_by(F("time").asc(nulls_last=True), "title")
     )
     upcoming_events = (
         Event.objects.filter(owner=request.user)
         .upcoming()
-        .order_by("date", "time", "title")
+        .order_by("date", F("time").asc(nulls_last=True), "title")
     )
     active_goals = (
         Goal.objects.filter(owner=request.user)

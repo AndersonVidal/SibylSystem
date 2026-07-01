@@ -6,5 +6,6 @@ app_name = "goals"
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("<int:pk>/edit/", views.edit, name="edit"),
     path("<int:pk>/progress/", views.update_progress, name="update_progress"),
 ]

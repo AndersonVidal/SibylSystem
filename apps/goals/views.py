@@ -29,6 +29,23 @@ def index(request):
 
 
 @login_required
+def edit(request, pk):
+    goal = get_object_or_404(Goal, pk=pk, owner=request.user)
+    if request.method == "POST":
+        form = GoalForm(request.POST, instance=goal)
+        if form.is_valid():
+            form.save()
+            return redirect("goals:index")
+    else:
+        form = GoalForm(instance=goal)
+    return render(
+        request,
+        "goals/edit.html",
+        {"active_nav": "goals", "form": form, "goal": goal},
+    )
+
+
+@login_required
 @require_POST
 def update_progress(request, pk):
     goal = get_object_or_404(Goal, pk=pk, owner=request.user)

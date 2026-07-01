@@ -45,6 +45,7 @@
             {% if goal.target_date %}
             <span class="entity-date">{{ goal.target_date|date:"d/m/Y" }}</span>
             {% endif %}
+            <a href="{% url 'goals:edit' goal.pk %}" class="btn btn-secondary btn-sm">Editar</a>
             <form method="post" action="{% url 'goals:update_progress' goal.pk %}">
                 {% csrf_token %}
                 <input type="number" name="progress" min="0" max="100"

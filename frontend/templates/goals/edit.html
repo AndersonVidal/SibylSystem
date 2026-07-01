@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Meta — SibylSystem{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Editar Meta</h1>
+
+<div class="card">
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-group form-group--grow">
+            <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+            <p class="form-error">{{ form.title.errors|first }}</p>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.progress.id_for_label }}">{{ form.progress.label }}</label>
+            {{ form.progress }}
+            {% if form.progress.errors %}
+            <p class="form-error">{{ form.progress.errors|first }}</p>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.target_date.id_for_label }}">{{ form.target_date.label }}</label>
+            {{ form.target_date }}
+        </div>
+        <div class="form-row" style="margin-top: 1.25rem;">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a href="{% url 'goals:index' %}" class="btn btn-secondary">Voltar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

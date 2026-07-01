@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Evento — SibylSystem{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Editar Evento</h1>
+
+<div class="card">
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-group form-group--grow">
+            <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+            <p class="form-error">{{ form.title.errors|first }}</p>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.date.id_for_label }}">{{ form.date.label }}</label>
+            {{ form.date }}
+            {% if form.date.errors %}
+            <p class="form-error">{{ form.date.errors|first }}</p>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.time.id_for_label }}">{{ form.time.label }}</label>
+            {{ form.time }}
+        </div>
+        <div class="form-row" style="margin-top: 1.25rem;">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a href="{% url 'events:index' %}" class="btn btn-secondary">Voltar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

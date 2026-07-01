@@ -1,5 +1,7 @@
 import datetime
 
+from django.urls import reverse
+
 from apps.events.models import Event
 from tests.base import SibylTestCase
 
@@ -67,3 +69,118 @@ class EventQuerySetUpcomingTest(SibylTestCase):
         other = self.make_user(username="other")
         Event.objects.create(title="e", owner=other, date=TOMORROW)
         self.assertFalse(self._qs().exists())
+
+
+class EventEditTest(SibylTestCase):
+    def setUp(self):
+        self.user = self.make_user()
+        self.login(self.user)
+        self.event = Event.objects.create(
+            title="Original",
+            owner=self.user,
+            date=datetime.date(2026, 3, 1),
+            time=datetime.time(14, 0),
+        )
+
+    def test_get_returns_200(self):
+        response = self.client.get(reverse("events:edit", args=[self.event.pk]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_form_prefilled_with_current_data(self):
+        response = self.client.get(reverse("events:edit", args=[self.event.pk]))
+        self.assertEqual(response.context["form"]["title"].value(), "Original")
+        self.assertEqual(
+            response.context["form"]["date"].value(), datetime.date(2026, 3, 1)
+        )
+        self.assertEqual(response.context["form"]["time"].value(), datetime.time(14, 0))
+
+    def test_post_valid_updates_title(self):
+        self.client.post(
+            reverse("events:edit", args=[self.event.pk]),
+            {"title": "Atualizado", "date": "2026-03-01", "time": ""},
+        )
+        self.event.refresh_from_db()
+        self.assertEqual(self.event.title, "Atualizado")
+
+    def test_post_valid_updates_date(self):
+        self.client.post(
+            reverse("events:edit", args=[self.event.pk]),
+            {"title": "Original", "date": "2026-06-15", "time": ""},
+        )
+        self.event.refresh_from_db()
+        self.assertEqual(self.event.date, datetime.date(2026, 6, 15))
+
+    def test_post_valid_updates_time(self):
+        self.client.post(
+            reverse("events:edit", args=[self.event.pk]),
+            {"title": "Original", "date": "2026-03-01", "time": "09:30"},
+        )
+        self.event.refresh_from_db()
+        self.assertEqual(self.event.time, datetime.time(9, 30))
+
+    def test_post_valid_clears_time(self):
+        self.client.post(
+            reverse("events:edit", args=[self.event.pk]),
+            {"title": "Original", "date": "2026-03-01", "time": ""},
+        )
+        self.event.refresh_from_db()
+        self.assertIsNone(self.event.time)
+
+    def test_post_valid_redirects_to_index(self):
+        response = self.client.post(
+            reverse("events:edit", args=[self.event.pk]),
+            {"title": "Atualizado", "date": "2026-03-01", "time": ""},
+        )
+        self.assertRedirects(response, reverse("events:index"))
+
+    def test_post_empty_title_returns_200(self):
+        response = self.client.post(
+            reverse("events:edit", args=[self.event.pk]),
+            {"title": "", "date": "2026-03-01", "time": ""},
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_empty_date_returns_200(self):
+        response = self.client.post(
+            reverse("events:edit", args=[self.event.pk]),
+            {"title": "Original", "date": "", "time": ""},
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_invalid_does_not_save(self):
+        self.client.post(
+            reverse("events:edit", args=[self.event.pk]),
+            {"title": "", "date": "", "time": ""},
+        )
+        self.event.refresh_from_db()
+        self.assertEqual(self.event.title, "Original")
+        self.assertEqual(self.event.date, datetime.date(2026, 3, 1))
+
+    def test_get_other_users_event_returns_404(self):
+        other = self.make_user(username="other")
+        other_event = Event.objects.create(
+            title="Other", owner=other, date=datetime.date(2026, 3, 1)
+        )
+        response = self.client.get(reverse("events:edit", args=[other_event.pk]))
+        self.assertEqual(response.status_code, 404)
+
+    def test_post_other_users_event_returns_404(self):
+        other = self.make_user(username="other")
+        other_event = Event.objects.create(
+            title="Other", owner=other, date=datetime.date(2026, 3, 1)
+        )
+        response = self.client.post(
+            reverse("events:edit", args=[other_event.pk]),
+            {"title": "Hacked", "date": "2026-03-01", "time": ""},
+        )
+        self.assertEqual(response.status_code, 404)
+        other_event.refresh_from_db()
+        self.assertEqual(other_event.title, "Other")
+
+    def test_edit_does_not_change_owner(self):
+        self.client.post(
+            reverse("events:edit", args=[self.event.pk]),
+            {"title": "Atualizado", "date": "2026-03-01", "time": ""},
+        )
+        self.event.refresh_from_db()
+        self.assertEqual(self.event.owner, self.user)

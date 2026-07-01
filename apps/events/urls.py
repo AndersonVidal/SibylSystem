@@ -6,4 +6,5 @@ app_name = "events"
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("<int:pk>/edit/", views.edit, name="edit"),
 ]

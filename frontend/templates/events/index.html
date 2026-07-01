@@ -45,6 +45,7 @@
             {% if event.time %}
             <span class="entity-date">{{ event.time|time:"H:i" }}</span>
             {% endif %}
+            <a href="{% url 'events:edit' event.pk %}" class="btn btn-secondary btn-sm">Editar</a>
         </span>
     </li>
     {% endfor %}

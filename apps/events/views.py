@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from apps.events.forms import EventForm
 from apps.events.models import Event
@@ -24,4 +24,21 @@ def index(request):
         request,
         "events/index.html",
         {"active_nav": "events", "form": form, "events": events},
+    )
+
+
+@login_required
+def edit(request, pk):
+    event = get_object_or_404(Event, pk=pk, owner=request.user)
+    if request.method == "POST":
+        form = EventForm(request.POST, instance=event)
+        if form.is_valid():
+            form.save()
+            return redirect("events:index")
+    else:
+        form = EventForm(instance=event)
+    return render(
+        request,
+        "events/edit.html",
+        {"active_nav": "events", "form": form, "event": event},
     )

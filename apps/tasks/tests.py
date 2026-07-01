@@ -212,3 +212,47 @@ class TaskEditTest(SibylTestCase):
         )
         self.task.refresh_from_db()
         self.assertEqual(self.task.owner, self.user)
+
+
+class TaskDeleteTest(SibylTestCase):
+    def setUp(self):
+        self.user = self.make_user()
+        self.login(self.user)
+        self.task = Task.objects.create(title="A excluir", owner=self.user)
+
+    def test_get_returns_200(self):
+        response = self.client.get(reverse("tasks:delete", args=[self.task.pk]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_contains_task_title(self):
+        response = self.client.get(reverse("tasks:delete", args=[self.task.pk]))
+        self.assertContains(response, "A excluir")
+
+    def test_get_does_not_delete(self):
+        self.client.get(reverse("tasks:delete", args=[self.task.pk]))
+        self.assertTrue(Task.objects.filter(pk=self.task.pk).exists())
+
+    def test_post_deletes_task(self):
+        self.client.post(reverse("tasks:delete", args=[self.task.pk]))
+        self.assertFalse(Task.objects.filter(pk=self.task.pk).exists())
+
+    def test_post_redirects_to_index(self):
+        response = self.client.post(reverse("tasks:delete", args=[self.task.pk]))
+        self.assertRedirects(response, reverse("tasks:index"))
+
+    def test_get_other_users_task_returns_404(self):
+        other = self.make_user(username="other")
+        other_task = Task.objects.create(title="Other", owner=other)
+        response = self.client.get(reverse("tasks:delete", args=[other_task.pk]))
+        self.assertEqual(response.status_code, 404)
+
+    def test_post_other_users_task_returns_404(self):
+        other = self.make_user(username="other")
+        other_task = Task.objects.create(title="Other", owner=other)
+        response = self.client.post(reverse("tasks:delete", args=[other_task.pk]))
+        self.assertEqual(response.status_code, 404)
+        self.assertTrue(Task.objects.filter(pk=other_task.pk).exists())
+
+    def test_nonexistent_task_returns_404(self):
+        response = self.client.get(reverse("tasks:delete", args=[99999]))
+        self.assertEqual(response.status_code, 404)

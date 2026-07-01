@@ -44,6 +44,15 @@ def edit(request, pk):
 
 
 @login_required
+def delete(request, pk):
+    task = get_object_or_404(Task, pk=pk, owner=request.user)
+    if request.method == "POST":
+        task.delete()
+        return redirect("tasks:index")
+    return render(request, "tasks/delete.html", {"active_nav": "tasks", "task": task})
+
+
+@login_required
 @require_POST
 def complete(request, pk):
     task = get_object_or_404(Task, pk=pk, owner=request.user)

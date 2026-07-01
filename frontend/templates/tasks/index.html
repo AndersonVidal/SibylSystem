@@ -40,6 +40,7 @@
             <span class="task-status task-status--{{ task.status|lower }}">{{ task.get_status_display }}</span>
             {% if task.is_overdue %}<span class="task-overdue">Atrasada</span>{% endif %}
             <a href="{% url 'tasks:edit' task.pk %}" class="btn btn-secondary btn-sm">Editar</a>
+            <a href="{% url 'tasks:delete' task.pk %}" class="btn btn-danger btn-sm">Excluir</a>
             {% if task.status == "PENDING" %}
             <form method="post" action="{% url 'tasks:complete' task.pk %}">
                 {% csrf_token %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Excluir Tarefa — SibylSystem{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Excluir Tarefa</h1>
+
+<div class="card">
+    <p>Tem certeza que deseja excluir a tarefa <strong>{{ task.title }}</strong>?</p>
+    <div class="form-row" style="margin-top: 1.25rem;">
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Excluir</button>
+        </form>
+        <a href="{% url 'tasks:index' %}" class="btn btn-secondary">Cancelar</a>
+    </div>
+</div>
+{% endblock %}

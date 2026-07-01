@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Excluir Meta — SibylSystem{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Excluir Meta</h1>
+
+<div class="card">
+    <p>Tem certeza que deseja excluir a meta <strong>{{ goal.title }}</strong>?</p>
+    <p class="entity-date">Progresso: {{ goal.progress }}%{% if goal.target_date %} — {{ goal.target_date|date:"d/m/Y" }}{% endif %}</p>
+    <div class="form-row" style="margin-top: 1.25rem;">
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Excluir</button>
+        </form>
+        <a href="{% url 'goals:index' %}" class="btn btn-secondary">Cancelar</a>
+    </div>
+</div>
+{% endblock %}

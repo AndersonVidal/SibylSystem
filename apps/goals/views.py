@@ -46,6 +46,15 @@ def edit(request, pk):
 
 
 @login_required
+def delete(request, pk):
+    goal = get_object_or_404(Goal, pk=pk, owner=request.user)
+    if request.method == "POST":
+        goal.delete()
+        return redirect("goals:index")
+    return render(request, "goals/delete.html", {"active_nav": "goals", "goal": goal})
+
+
+@login_required
 @require_POST
 def update_progress(request, pk):
     goal = get_object_or_404(Goal, pk=pk, owner=request.user)

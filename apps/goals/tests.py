@@ -157,3 +157,51 @@ class GoalEditTest(SibylTestCase):
         )
         self.goal.refresh_from_db()
         self.assertEqual(self.goal.owner, self.user)
+
+
+class GoalDeleteTest(SibylTestCase):
+    def setUp(self):
+        self.user = self.make_user()
+        self.login(self.user)
+        self.goal = Goal.objects.create(title="A excluir", owner=self.user, progress=40)
+
+    def test_get_returns_200(self):
+        response = self.client.get(reverse("goals:delete", args=[self.goal.pk]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_contains_goal_title(self):
+        response = self.client.get(reverse("goals:delete", args=[self.goal.pk]))
+        self.assertContains(response, "A excluir")
+
+    def test_get_contains_goal_progress(self):
+        response = self.client.get(reverse("goals:delete", args=[self.goal.pk]))
+        self.assertContains(response, "40%")
+
+    def test_get_does_not_delete(self):
+        self.client.get(reverse("goals:delete", args=[self.goal.pk]))
+        self.assertTrue(Goal.objects.filter(pk=self.goal.pk).exists())
+
+    def test_post_deletes_goal(self):
+        self.client.post(reverse("goals:delete", args=[self.goal.pk]))
+        self.assertFalse(Goal.objects.filter(pk=self.goal.pk).exists())
+
+    def test_post_redirects_to_index(self):
+        response = self.client.post(reverse("goals:delete", args=[self.goal.pk]))
+        self.assertRedirects(response, reverse("goals:index"))
+
+    def test_get_other_users_goal_returns_404(self):
+        other = self.make_user(username="other")
+        other_goal = Goal.objects.create(title="Other", owner=other, progress=50)
+        response = self.client.get(reverse("goals:delete", args=[other_goal.pk]))
+        self.assertEqual(response.status_code, 404)
+
+    def test_post_other_users_goal_returns_404(self):
+        other = self.make_user(username="other")
+        other_goal = Goal.objects.create(title="Other", owner=other, progress=50)
+        response = self.client.post(reverse("goals:delete", args=[other_goal.pk]))
+        self.assertEqual(response.status_code, 404)
+        self.assertTrue(Goal.objects.filter(pk=other_goal.pk).exists())
+
+    def test_nonexistent_goal_returns_404(self):
+        response = self.client.get(reverse("goals:delete", args=[99999]))
+        self.assertEqual(response.status_code, 404)

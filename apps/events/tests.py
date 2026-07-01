@@ -184,3 +184,55 @@ class EventEditTest(SibylTestCase):
         )
         self.event.refresh_from_db()
         self.assertEqual(self.event.owner, self.user)
+
+
+class EventDeleteTest(SibylTestCase):
+    def setUp(self):
+        self.user = self.make_user()
+        self.login(self.user)
+        self.event = Event.objects.create(
+            title="A excluir",
+            owner=self.user,
+            date=datetime.date(2026, 5, 10),
+        )
+
+    def test_get_returns_200(self):
+        response = self.client.get(reverse("events:delete", args=[self.event.pk]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_contains_event_title(self):
+        response = self.client.get(reverse("events:delete", args=[self.event.pk]))
+        self.assertContains(response, "A excluir")
+
+    def test_get_does_not_delete(self):
+        self.client.get(reverse("events:delete", args=[self.event.pk]))
+        self.assertTrue(Event.objects.filter(pk=self.event.pk).exists())
+
+    def test_post_deletes_event(self):
+        self.client.post(reverse("events:delete", args=[self.event.pk]))
+        self.assertFalse(Event.objects.filter(pk=self.event.pk).exists())
+
+    def test_post_redirects_to_index(self):
+        response = self.client.post(reverse("events:delete", args=[self.event.pk]))
+        self.assertRedirects(response, reverse("events:index"))
+
+    def test_get_other_users_event_returns_404(self):
+        other = self.make_user(username="other")
+        other_event = Event.objects.create(
+            title="Other", owner=other, date=datetime.date(2026, 5, 10)
+        )
+        response = self.client.get(reverse("events:delete", args=[other_event.pk]))
+        self.assertEqual(response.status_code, 404)
+
+    def test_post_other_users_event_returns_404(self):
+        other = self.make_user(username="other")
+        other_event = Event.objects.create(
+            title="Other", owner=other, date=datetime.date(2026, 5, 10)
+        )
+        response = self.client.post(reverse("events:delete", args=[other_event.pk]))
+        self.assertEqual(response.status_code, 404)
+        self.assertTrue(Event.objects.filter(pk=other_event.pk).exists())
+
+    def test_nonexistent_event_returns_404(self):
+        response = self.client.get(reverse("events:delete", args=[99999]))
+        self.assertEqual(response.status_code, 404)

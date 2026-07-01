@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Excluir Evento — SibylSystem{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Excluir Evento</h1>
+
+<div class="card">
+    <p>Tem certeza que deseja excluir o evento <strong>{{ event.title }}</strong>?</p>
+    <p class="entity-date">{{ event.date|date:"d/m/Y" }}{% if event.time %} às {{ event.time|time:"H:i" }}{% endif %}</p>
+    <div class="form-row" style="margin-top: 1.25rem;">
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Excluir</button>
+        </form>
+        <a href="{% url 'events:index' %}" class="btn btn-secondary">Cancelar</a>
+    </div>
+</div>
+{% endblock %}

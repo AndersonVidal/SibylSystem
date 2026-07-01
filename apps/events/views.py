@@ -42,3 +42,14 @@ def edit(request, pk):
         "events/edit.html",
         {"active_nav": "events", "form": form, "event": event},
     )
+
+
+@login_required
+def delete(request, pk):
+    event = get_object_or_404(Event, pk=pk, owner=request.user)
+    if request.method == "POST":
+        event.delete()
+        return redirect("events:index")
+    return render(
+        request, "events/delete.html", {"active_nav": "events", "event": event}
+    )

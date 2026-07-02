@@ -271,27 +271,28 @@ O projeto não apaga arquivos antigos automaticamente.
 
 ---
 
-## 7.1.1. Script de Inicialização
+## 7.1.1. Scripts de Inicialização
 
-A forma oficial de iniciar o Sibyl localmente é:
+O Sibyl possui um script de inicialização para cada plataforma suportada:
 
-```bash
-./scripts/run.sh
+| Sistema | Script | Shell |
+|---|---|---|
+| Linux (incluindo Fedora) | `scripts/run.sh` | bash |
+| macOS | `scripts/run-macos.sh` | bash |
+| Windows | `scripts/run.ps1` | PowerShell |
+
+Todos executam o mesmo fluxo:
+
 ```
-
-O script pode ser executado de qualquer diretório — ele localiza a raiz do projeto automaticamente via `${BASH_SOURCE[0]}`.
-
-**Fluxo executado:**
-
-```
-./scripts/run.sh
-↓
-verifica venv/bin/python → erro explícito se ausente
+verifica venv/bin/python (ou venv\Scripts\python.exe no Windows)
+→ erro explícito se ausente
 ↓
 python manage.py migrate
 ↓
 python manage.py runserver
 ```
+
+Os scripts localizam a raiz do projeto automaticamente (`BASH_SOURCE` no bash; `$MyInvocation.MyCommand.Path` no PowerShell) e podem ser executados de qualquer diretório.
 
 **Pré-requisitos:**
 
@@ -303,9 +304,12 @@ python manage.py runserver
 
 | Situação | Comportamento |
 |---|---|
-| `venv/bin/python` ausente | Mensagem clara + `exit 1` |
-| Erro nas migrations | `set -e` interrompe o script |
+| Interpretador Python ausente no venv | Mensagem clara + encerramento |
+| Erro nas migrations | Script interrompido imediatamente |
 | Banco inexistente | `migrate` cria automaticamente |
+
+> **Windows:** pode ser necessário permitir scripts PowerShell na primeira execução:
+> `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`
 
 ---
 

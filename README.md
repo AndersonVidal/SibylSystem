@@ -22,11 +22,13 @@ não existem servidores externos e o navegador é apenas a interface.
 
 - Python 3.11 ou superior
 - SQLite (embutido no Python)
-- Linux (suporte a outros sistemas operacionais pode ser adicionado futuramente)
+- Linux, macOS ou Windows
 
 ---
 
 ## Instalação
+
+**Linux / macOS:**
 
 ```bash
 git clone https://github.com/AndersonVidal/SibylSystem.git
@@ -39,10 +41,21 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
+**Windows (PowerShell):**
+
+```powershell
+git clone https://github.com/AndersonVidal/SibylSystem.git
+cd SibylSystem
+
+python -m venv venv
+.\venv\Scripts\pip install -r requirements.txt
+
+copy .env.example .env
+```
+
 Edite o arquivo `.env` e defina uma chave secreta:
 
 ```bash
-# Gerar uma chave segura:
 python -c "import secrets; print(secrets.token_urlsafe(50))"
 ```
 
@@ -52,9 +65,11 @@ Cole o resultado no campo `SECRET_KEY` do arquivo `.env`.
 
 ## Inicialização
 
-```bash
-./scripts/run.sh
-```
+| Sistema | Comando |
+|---|---|
+| Linux | `./scripts/run.sh` |
+| macOS | `./scripts/run-macos.sh` |
+| Windows | `.\scripts\run.ps1` |
 
 O script aplica as migrations, inicia o servidor e exibe:
 
@@ -64,6 +79,9 @@ http://127.0.0.1:8000
 ```
 
 Abra o endereço no navegador. Para encerrar, pressione `Ctrl+C` no terminal.
+
+> **Windows:** na primeira execução pode ser necessário permitir a execução de scripts PowerShell:
+> `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`
 
 ---
 
@@ -134,7 +152,10 @@ Para reinstalar após mover o projeto de diretório, basta executar
 
 ```bash
 git pull
-./scripts/run.sh
+# em seguida execute o script do seu sistema operacional
+./scripts/run.sh        # Linux
+./scripts/run-macos.sh  # macOS
+.\scripts\run.ps1       # Windows
 ```
 
 O script aplica as migrations automaticamente. Os dados não são afetados.
@@ -147,7 +168,7 @@ O script aplica as migrations automaticamente. Os dados não são afetados.
 apps/          módulos de domínio (accounts, tasks, events, goals, dashboard)
 config/        configurações do Django
 frontend/      templates e assets estáticos
-scripts/       scripts de operação (run.sh, install-launcher.sh)
+scripts/       scripts de operação (run.sh, run-macos.sh, run.ps1, install-launcher.sh)
 resources/     arquivos de integração com o sistema operacional
 docs/          documentação técnica detalhada
 tests/         infraestrutura de testes compartilhada

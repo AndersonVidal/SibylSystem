@@ -271,6 +271,48 @@ O projeto não apaga arquivos antigos automaticamente.
 
 ---
 
+## 7.2. Backup do Banco de Dados
+
+### Executar um backup
+
+```bash
+python manage.py backup
+```
+
+O comando cria uma cópia do banco com timestamp e aplica a política de retenção automaticamente.
+
+### Onde os backups ficam
+
+```
+DATA_DIR/backups/
+    database-YYYYMMDD-HHMMSS.sqlite3
+```
+
+Exemplo real:
+
+```
+~/.local/share/sibyl/backups/
+    database-20260702-193415.sqlite3
+```
+
+### Política de retenção
+
+Os **10 backups mais recentes** são mantidos. Ao criar um novo backup, os mais antigos são removidos automaticamente.
+
+### Como restaurar
+
+Restaurar um backup é uma operação de arquivo:
+
+```bash
+# Parar a aplicação antes de restaurar
+cp ~/.local/share/sibyl/backups/database-YYYYMMDD-HHMMSS.sqlite3 \
+   ~/.local/share/sibyl/database.sqlite3
+```
+
+Nenhuma ferramenta adicional é necessária.
+
+---
+
 ## 8. Deployment Strategy
 
 - **Como publicar o MVP:** empacotar a aplicação única e rodá-la em um processo, servindo HTTP.

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Sibyl
+Comment=Sistema pessoal de organização e acompanhamento de vida
+Exec=bash -c "SIBYL_PROJECT_DIR/scripts/run.sh"
+Icon=utilities-terminal
+Terminal=true
+Categories=Utility;
+StartupNotify=false

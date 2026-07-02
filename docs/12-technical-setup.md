@@ -309,6 +309,42 @@ python manage.py runserver
 
 ---
 
+## 7.1.2. Launcher Desktop (Linux)
+
+O Sibyl pode ser iniciado diretamente pelo menu de aplicações do sistema.
+
+**Instalar o launcher:**
+
+```bash
+./scripts/install-launcher.sh
+```
+
+O script substitui o caminho do projeto automaticamente e instala o arquivo `.desktop` em:
+
+```
+~/.local/share/applications/sibyl.desktop
+```
+
+**Remover o launcher:**
+
+```bash
+rm ~/.local/share/applications/sibyl.desktop
+```
+
+**Mover o projeto de diretório:**
+
+Basta reinstalar o launcher após mover o projeto:
+
+```bash
+./scripts/install-launcher.sh
+```
+
+**Ícone:** temporariamente usa `utilities-terminal` do sistema. O campo `Icon=` no arquivo `resources/linux/sibyl.desktop` pode ser atualizado quando um ícone próprio for criado.
+
+**O launcher não conhece Django, banco de dados nem ambiente virtual.** Ele apenas executa `scripts/run.sh`, que concentra toda a lógica operacional.
+
+---
+
 ## 7.2. Backup do Banco de Dados
 
 ### Executar um backup

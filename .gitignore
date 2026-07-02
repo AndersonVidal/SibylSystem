@@ -8,6 +8,8 @@ venv/
 .venv/
 
 # Django
+# O banco vive em DATA_DIR (~/.local/share/sibyl/), não no projeto.
+# Esta linha cobre qualquer db.sqlite3 residual na raiz.
 db.sqlite3
 *.log
 media/

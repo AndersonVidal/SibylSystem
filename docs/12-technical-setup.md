@@ -236,6 +236,41 @@ Adequado a **um desenvolvedor**, **evolução incremental** e **baixo custo oper
 
 ---
 
+## 7.1. Diretório de Dados do Usuário
+
+Os dados do usuário são separados do código da aplicação.
+
+| SO | Caminho padrão |
+|---|---|
+| Linux | `~/.local/share/sibyl/` (respeita `XDG_DATA_HOME`) |
+| macOS | `~/Library/Application Support/Sibyl/` |
+| Windows | `%LOCALAPPDATA%\Sibyl\` |
+
+**Estrutura criada automaticamente na primeira execução:**
+
+```
+sibyl/
+    database.sqlite3   ← banco de dados
+    backups/           ← reservado para T7.3
+    logs/              ← reservado para logs futuros
+```
+
+A pasta é criada pelo `settings.py` via `mkdir(parents=True, exist_ok=True)` — nenhuma ação manual necessária.
+
+**Migração de banco existente:**
+
+Se existir um `db.sqlite3` na raiz do projeto (versões anteriores à T7.2), copie-o manualmente:
+
+```bash
+# Linux
+cp db.sqlite3 ~/.local/share/sibyl/database.sqlite3
+```
+
+O arquivo antigo na raiz do projeto pode ser removido após a migração.
+O projeto não apaga arquivos antigos automaticamente.
+
+---
+
 ## 8. Deployment Strategy
 
 - **Como publicar o MVP:** empacotar a aplicação única e rodá-la em um processo, servindo HTTP.

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 import os
+import platform
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -19,6 +20,26 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / ".env")
+
+
+def _data_dir() -> Path:
+    """Retorna o diretório de dados do usuário seguindo convenções do SO."""
+    system = platform.system()
+    if system == "Windows":
+        base = Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local"))
+        return base / "Sibyl"
+    if system == "Darwin":
+        return Path.home() / "Library" / "Application Support" / "Sibyl"
+    # Linux e demais — XDG Base Directory Specification
+    xdg = os.environ.get("XDG_DATA_HOME")
+    base = Path(xdg) if xdg else Path.home() / ".local" / "share"
+    return base / "sibyl"
+
+
+DATA_DIR = _data_dir()
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+(DATA_DIR / "backups").mkdir(exist_ok=True)
+(DATA_DIR / "logs").mkdir(exist_ok=True)
 
 
 def _env_bool(name: str, default: bool = False) -> bool:
@@ -98,7 +119,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": DATA_DIR / "database.sqlite3",
         "TEST": {
             "NAME": ":memory:",
         },

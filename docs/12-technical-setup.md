@@ -203,7 +203,7 @@ As variáveis de ambiente sensíveis são externalizadas e nunca commitadas.
 ```bash
 cp .env.example .env
 # Editar .env com valores reais
-python manage.py runserver
+./scripts/run.sh
 ```
 
 Gerar uma chave secreta segura:
@@ -268,6 +268,44 @@ cp db.sqlite3 ~/.local/share/sibyl/database.sqlite3
 
 O arquivo antigo na raiz do projeto pode ser removido após a migração.
 O projeto não apaga arquivos antigos automaticamente.
+
+---
+
+## 7.1.1. Script de Inicialização
+
+A forma oficial de iniciar o Sibyl localmente é:
+
+```bash
+./scripts/run.sh
+```
+
+O script pode ser executado de qualquer diretório — ele localiza a raiz do projeto automaticamente via `${BASH_SOURCE[0]}`.
+
+**Fluxo executado:**
+
+```
+./scripts/run.sh
+↓
+verifica venv/bin/python → erro explícito se ausente
+↓
+python manage.py migrate
+↓
+python manage.py runserver
+```
+
+**Pré-requisitos:**
+
+1. Ambiente virtual criado: `python3 -m venv venv`
+2. Dependências instaladas: `pip install -r requirements.txt`
+3. Arquivo `.env` configurado (ver §6.1)
+
+**Tratamento de erros:**
+
+| Situação | Comportamento |
+|---|---|
+| `venv/bin/python` ausente | Mensagem clara + `exit 1` |
+| Erro nas migrations | `set -e` interrompe o script |
+| Banco inexistente | `migrate` cria automaticamente |
 
 ---
 

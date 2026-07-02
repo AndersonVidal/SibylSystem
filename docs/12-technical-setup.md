@@ -189,6 +189,34 @@ SibylSystem/
 
 ---
 
+## 6.1. Environment Variables
+
+As variáveis de ambiente sensíveis são externalizadas e nunca commitadas.
+
+| Variável | Obrigatória | Descrição |
+|---|---|---|
+| `SECRET_KEY` | **Sim** — a app falha explicitamente se ausente | Chave secreta do Django |
+| `DEBUG` | Não (`False` por padrão) | `True` em desenvolvimento; omitir ou `False` em produção |
+
+**Setup local:**
+
+```bash
+cp .env.example .env
+# Editar .env com valores reais
+python manage.py runserver
+```
+
+Gerar uma chave secreta segura:
+
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(50))"
+```
+
+O arquivo `.env` é carregado automaticamente via `python-dotenv` no início do `settings.py`.
+O `.env` está no `.gitignore` e nunca deve ser commitado.
+
+---
+
 ## 7. Development Workflow
 
 Adequado a **um desenvolvedor**, **evolução incremental** e **baixo custo operacional**.

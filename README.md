@@ -126,25 +126,49 @@ cp ~/.local/share/sibyl/backups/database-YYYYMMDD-HHMMSS.sqlite3 \
 
 ---
 
-## Launcher Desktop (Linux)
+## Launcher Desktop
 
-Para iniciar o Sibyl pelo menu de aplicações:
+O Sibyl pode ser iniciado pelo menu de aplicações ou pelo Finder/Explorer, sem abrir um terminal.
 
-```bash
-./scripts/install-launcher.sh
-```
-
-O launcher aparece no menu do sistema e executa `scripts/run.sh` ao ser clicado.
-A aplicação continua rodando localmente — o navegador continua sendo a interface.
-
-Para remover:
+**Linux:**
 
 ```bash
-rm ~/.local/share/applications/sibyl.desktop
+./scripts/install-launcher-linux.sh
 ```
 
-Para reinstalar após mover o projeto de diretório, basta executar
-`install-launcher.sh` novamente.
+Instala um launcher `.desktop` em `~/.local/share/applications/`. O Sibyl aparece no menu de aplicações.
+
+Para remover: `rm ~/.local/share/applications/sibyl.desktop`
+
+---
+
+**macOS:**
+
+```bash
+./scripts/install-launcher-macos.sh
+```
+
+Instala `Sibyl.command` em `~/Applications/`. Clique duas vezes no Finder para iniciar.
+
+Para remover: `rm ~/Applications/Sibyl.command`
+
+---
+
+**Windows:**
+
+```powershell
+.\scripts\install-launcher-windows.ps1
+```
+
+Cria um atalho `Sibyl` no Menu Iniciar do usuário.
+
+Para remover: `Remove-Item "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Sibyl.lnk"`
+
+---
+
+Em todos os sistemas, a aplicação continua rodando localmente — o navegador continua sendo a interface.
+
+Para reinstalar após mover o projeto de diretório, execute o script de instalação novamente.
 
 ---
 

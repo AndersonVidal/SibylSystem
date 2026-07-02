@@ -313,37 +313,40 @@ Os scripts localizam a raiz do projeto automaticamente (`BASH_SOURCE` no bash; `
 
 ---
 
-## 7.1.2. Launcher Desktop (Linux)
+## 7.1.2. Launchers Desktop
 
-O Sibyl pode ser iniciado diretamente pelo menu de aplicações do sistema.
+O Sibyl pode ser iniciado pelo menu de aplicações, Finder ou Menu Iniciar, sem abrir terminal.
+Todos os launchers delegam exclusivamente ao script oficial de cada plataforma.
 
-**Instalar o launcher:**
+| Sistema | Script de instalação | Launcher instalado |
+|---|---|---|
+| Linux | `scripts/install-launcher-linux.sh` | `~/.local/share/applications/sibyl.desktop` |
+| macOS | `scripts/install-launcher-macos.sh` | `~/Applications/Sibyl.command` |
+| Windows | `scripts\install-launcher-windows.ps1` | `%APPDATA%\Microsoft\Windows\Start Menu\Programs\Sibyl.lnk` |
 
-```bash
-./scripts/install-launcher.sh
-```
+**Como funciona:**
 
-O script substitui o caminho do projeto automaticamente e instala o arquivo `.desktop` em:
-
-```
-~/.local/share/applications/sibyl.desktop
-```
-
-**Remover o launcher:**
-
-```bash
-rm ~/.local/share/applications/sibyl.desktop
-```
+Cada installer substitui o placeholder `SIBYL_PROJECT_DIR` (Linux/macOS) ou monta o caminho dinamicamente (Windows) com o caminho absoluto real do projeto. Ao reinstalar após mover o projeto, o caminho é atualizado automaticamente.
 
 **Mover o projeto de diretório:**
 
-Basta reinstalar o launcher após mover o projeto:
+Execute o script de instalação novamente — ele gera o launcher com o novo caminho.
 
-```bash
-./scripts/install-launcher.sh
+**Ícones:** Linux e macOS usam ícone temporário do sistema (`utilities-terminal`). O Windows usa o ícone do PowerShell. Os campos de ícone nos arquivos de recurso podem ser atualizados quando um ícone próprio for criado.
+
+**Fluxo de todos os launchers:**
+
 ```
-
-**Ícone:** temporariamente usa `utilities-terminal` do sistema. O campo `Icon=` no arquivo `resources/linux/sibyl.desktop` pode ser atualizado quando um ícone próprio for criado.
+Launcher (SO)
+↓
+scripts/run.sh  (Linux)
+scripts/run-macos.sh  (macOS)
+scripts/run.ps1  (Windows)
+↓
+migrate + runserver
+↓
+http://127.0.0.1:8000
+```
 
 **O launcher não conhece Django, banco de dados nem ambiente virtual.** Ele apenas executa `scripts/run.sh`, que concentra toda a lógica operacional.
 

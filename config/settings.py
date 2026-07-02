@@ -15,10 +15,17 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-load_dotenv()
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR / ".env")
+
+
+def _env_bool(name: str, default: bool = False) -> bool:
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "on"}
 
 
 # Quick-start development settings - unsuitable for production
@@ -33,7 +40,7 @@ if not SECRET_KEY:
     )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+DEBUG = _env_bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = []
 

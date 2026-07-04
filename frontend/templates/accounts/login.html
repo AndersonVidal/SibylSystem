@@ -13,7 +13,7 @@
     <div class="login-card">
         <h1 class="login-title">SibylSystem</h1>
 
-        <form method="post" novalidate>
+        <form method="post" action="{% url 'accounts:login' %}" novalidate>
             {% csrf_token %}
 
             {% if form.non_field_errors %}
@@ -32,8 +32,99 @@
 
             <button type="submit" class="btn btn-primary btn-full">Entrar</button>
         </form>
+
+        {% if not user_exists %}
+        <div class="register-link-wrapper">
+            <button type="button" class="btn-link" id="open-register-modal">Registrar-se</button>
+        </div>
+        {% endif %}
     </div>
 </main>
+
+{% if not user_exists %}
+<div class="modal-overlay" id="register-modal"{% if not show_register_modal %} style="display:none"{% endif %}>
+    <div class="modal-box">
+        <h2 class="modal-title">Criar conta</h2>
+        <p class="modal-subtitle">Primeiro acesso — cria o administrador local.</p>
+
+        <form method="post" action="{% url 'accounts:register' %}" novalidate>
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ register_form.first_name.id_for_label }}">{{ register_form.first_name.label }}</label>
+                {{ register_form.first_name }}
+                {% if register_form.first_name.errors %}
+                <p class="form-error">{{ register_form.first_name.errors|first }}</p>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ register_form.last_name.id_for_label }}">{{ register_form.last_name.label }}</label>
+                {{ register_form.last_name }}
+                {% if register_form.last_name.errors %}
+                <p class="form-error">{{ register_form.last_name.errors|first }}</p>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ register_form.username.id_for_label }}">{{ register_form.username.label }}</label>
+                {{ register_form.username }}
+                {% if register_form.username.errors %}
+                <p class="form-error">{{ register_form.username.errors|first }}</p>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ register_form.email.id_for_label }}">{{ register_form.email.label }}</label>
+                {{ register_form.email }}
+                {% if register_form.email.errors %}
+                <p class="form-error">{{ register_form.email.errors|first }}</p>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ register_form.password.id_for_label }}">{{ register_form.password.label }}</label>
+                {{ register_form.password }}
+                {% if register_form.password.errors %}
+                <p class="form-error">{{ register_form.password.errors|first }}</p>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ register_form.confirm_password.id_for_label }}">{{ register_form.confirm_password.label }}</label>
+                {{ register_form.confirm_password }}
+                {% if register_form.confirm_password.errors %}
+                <p class="form-error">{{ register_form.confirm_password.errors|first }}</p>
+                {% endif %}
+            </div>
+
+            <div class="modal-actions">
+                <button type="submit" class="btn btn-primary">Criar conta</button>
+                <button type="button" class="btn btn-secondary" id="close-register-modal">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+(function () {
+    var modal = document.getElementById('register-modal');
+    var openBtn = document.getElementById('open-register-modal');
+    var closeBtn = document.getElementById('close-register-modal');
+
+    if (openBtn) {
+        openBtn.addEventListener('click', function () {
+            modal.style.display = 'flex';
+        });
+    }
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function () {
+            modal.style.display = 'none';
+        });
+    }
+}());
+</script>
+{% endif %}
 
 </body>
 </html>

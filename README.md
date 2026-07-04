@@ -83,6 +83,8 @@ Abra o endereço no navegador. Para encerrar, pressione `Ctrl+C` no terminal.
 > **Windows:** na primeira execução pode ser necessário permitir a execução de scripts PowerShell:
 > `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`
 
+**Primeiro acesso:** na tela de login, clique em **Registrar-se** para criar o administrador local. O botão aparece apenas enquanto nenhum usuário existir.
+
 ---
 
 ## Dados da aplicação

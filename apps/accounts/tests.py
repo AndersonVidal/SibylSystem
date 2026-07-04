@@ -5,6 +5,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from django.conf import settings as django_settings
+from django.contrib.auth import get_user_model
 from django.core.management import call_command
 
 from tests.base import SibylTestCase
@@ -93,6 +94,115 @@ class NextParamFlowTest(SibylTestCase):
         self.assertRedirects(response, "/tasks/", fetch_redirect_response=False)
         response = self.client.get("/tasks/")
         self.assertEqual(response.status_code, 200)
+
+
+# ---------------------------------------------------------------------------
+# Registro inicial
+# ---------------------------------------------------------------------------
+
+STRONG_PASSWORD = "Sibyl$2026secure!"
+
+VALID_REGISTER_DATA = {
+    "first_name": "Anderson",
+    "last_name": "Vidal",
+    "username": "anderson",
+    "email": "anderson@example.com",
+    "password": STRONG_PASSWORD,
+    "confirm_password": STRONG_PASSWORD,
+}
+
+
+class RegisterButtonVisibilityTest(SibylTestCase):
+    def test_button_shown_when_no_users(self):
+        response = self.client.get("/accounts/login/")
+        self.assertContains(response, "Registrar-se")
+
+    def test_button_hidden_when_user_exists(self):
+        self.make_user()
+        response = self.client.get("/accounts/login/")
+        self.assertNotContains(response, "Registrar-se")
+
+
+class RegisterViewAccessTest(SibylTestCase):
+    def test_get_returns_200_when_no_users(self):
+        response = self.client.get("/accounts/register/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_returns_404_when_user_exists(self):
+        self.make_user()
+        response = self.client.get("/accounts/register/")
+        self.assertEqual(response.status_code, 404)
+
+
+class RegisterCreateUserTest(SibylTestCase):
+    def _post(self, data=None):
+        return self.client.post("/accounts/register/", data or VALID_REGISTER_DATA)
+
+    def test_post_valid_creates_user(self):
+        self._post()
+        User = get_user_model()
+        self.assertEqual(User.objects.count(), 1)
+
+    def test_first_user_is_staff(self):
+        self._post()
+        User = get_user_model()
+        self.assertTrue(User.objects.first().is_staff)
+
+    def test_first_user_is_superuser(self):
+        self._post()
+        User = get_user_model()
+        self.assertTrue(User.objects.first().is_superuser)
+
+    def test_first_user_is_active(self):
+        self._post()
+        User = get_user_model()
+        self.assertTrue(User.objects.first().is_active)
+
+    def test_post_valid_authenticates_user(self):
+        self._post()
+        self.assertIn("_auth_user_id", self.client.session)
+
+    def test_post_valid_redirects_to_home(self):
+        response = self._post()
+        self.assertRedirects(response, "/")
+
+    def test_password_mismatch_returns_200(self):
+        data = {**VALID_REGISTER_DATA, "confirm_password": "outra_senha"}
+        response = self._post(data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_password_mismatch_does_not_create_user(self):
+        data = {**VALID_REGISTER_DATA, "confirm_password": "outra_senha"}
+        self._post(data)
+        User = get_user_model()
+        self.assertEqual(User.objects.count(), 0)
+
+    def test_post_blocks_when_user_exists(self):
+        self.make_user()
+        response = self._post()
+        self.assertEqual(response.status_code, 404)
+
+    def test_post_does_not_create_second_user(self):
+        self.make_user()
+        self._post()
+        User = get_user_model()
+        self.assertEqual(User.objects.count(), 1)
+
+    def test_required_fields_validated_empty_post(self):
+        response = self.client.post("/accounts/register/", {})
+        self.assertEqual(response.status_code, 200)
+        User = get_user_model()
+        self.assertEqual(User.objects.count(), 0)
+
+    def test_login_works_after_registration(self):
+        self._post()
+        self.client.logout()
+        response = self.client.post(
+            "/accounts/login/",
+            {"username": "anderson", "password": STRONG_PASSWORD},
+        )
+        self.assertRedirects(response, "/")
+        self.assertIn("_auth_user_id", self.client.session)
 
 
 # ---------------------------------------------------------------------------

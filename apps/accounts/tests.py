@@ -97,6 +97,124 @@ class NextParamFlowTest(SibylTestCase):
 
 
 # ---------------------------------------------------------------------------
+# Perfil do usuário
+# ---------------------------------------------------------------------------
+
+
+class ProfileAccessTest(SibylTestCase):
+    def _admin(self):
+        return self.make_user(username="admin", is_staff=True, is_superuser=True)
+
+    def test_anonymous_redirects_to_login(self):
+        response = self.client.get("/accounts/profile/")
+        self.assertRedirects(
+            response,
+            "/accounts/login/?next=/accounts/profile/",
+            fetch_redirect_response=False,
+        )
+
+    def test_regular_user_returns_404(self):
+        self.login(self.make_user())
+        response = self.client.get("/accounts/profile/")
+        self.assertEqual(response.status_code, 404)
+
+    def test_staff_only_returns_404(self):
+        self.login(self.make_user(username="staff", is_staff=True))
+        response = self.client.get("/accounts/profile/")
+        self.assertEqual(response.status_code, 404)
+
+    def test_superuser_only_returns_404(self):
+        self.login(self.make_user(username="su", is_superuser=True))
+        response = self.client.get("/accounts/profile/")
+        self.assertEqual(response.status_code, 404)
+
+    def test_staff_and_superuser_returns_200(self):
+        self.login(self._admin())
+        response = self.client.get("/accounts/profile/")
+        self.assertEqual(response.status_code, 200)
+
+
+class ProfileContentTest(SibylTestCase):
+    def setUp(self):
+        self.user = self.make_user(
+            username="admin",
+            email="admin@example.com",
+            first_name="Anderson",
+            last_name="Vidal",
+            is_staff=True,
+            is_superuser=True,
+        )
+        self.login(self.user)
+
+    def test_page_shows_username(self):
+        response = self.client.get("/accounts/profile/")
+        self.assertContains(response, "admin")
+
+    def test_page_shows_email(self):
+        response = self.client.get("/accounts/profile/")
+        self.assertContains(response, "admin@example.com")
+
+    def test_page_does_not_show_password_hash(self):
+        response = self.client.get("/accounts/profile/")
+        self.assertNotContains(response, self.user.password)
+
+
+class ProfileChangePasswordTest(SibylTestCase):
+    NEW_PASSWORD = "Sibyl$newPass2026!"
+
+    def setUp(self):
+        self.user = self.make_user(username="admin", is_staff=True, is_superuser=True)
+        self.login(self.user)
+
+    def test_post_valid_changes_password(self):
+        self.client.post(
+            "/accounts/profile/",
+            {
+                "old_password": "testpass123",
+                "new_password1": self.NEW_PASSWORD,
+                "new_password2": self.NEW_PASSWORD,
+            },
+        )
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password(self.NEW_PASSWORD))
+
+    def test_post_valid_keeps_user_authenticated(self):
+        self.client.post(
+            "/accounts/profile/",
+            {
+                "old_password": "testpass123",
+                "new_password1": self.NEW_PASSWORD,
+                "new_password2": self.NEW_PASSWORD,
+            },
+        )
+        self.assertIn("_auth_user_id", self.client.session)
+
+    def test_post_invalid_does_not_change_password(self):
+        self.client.post(
+            "/accounts/profile/",
+            {
+                "old_password": "wrong_password",
+                "new_password1": self.NEW_PASSWORD,
+                "new_password2": self.NEW_PASSWORD,
+            },
+        )
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password("testpass123"))
+
+
+class ProfileNavbarTest(SibylTestCase):
+    def test_perfil_link_shown_for_staff_superuser(self):
+        self.login(self.make_user(username="admin", is_staff=True, is_superuser=True))
+        response = self.client.get("/")
+        self.assertContains(response, "Perfil")
+
+    def test_perfil_link_hidden_for_regular_user(self):
+        self.login(self.make_user())
+        response = self.client.get("/")
+        self.assertNotContains(response, "Perfil")
+
+
+# ---------------------------------------------------------------------------
 # Registro inicial
 # ---------------------------------------------------------------------------
 

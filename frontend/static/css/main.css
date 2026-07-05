@@ -376,6 +376,55 @@ main {
     padding: 1rem 0;
 }
 
+/* ── Perfil ─────────────────────────────────────────── */
+
+.card-section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    color: #1a1a2e;
+}
+
+.profile-data {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    margin: 0;
+}
+
+.profile-data dt,
+.profile-data dd {
+    padding: 0.55rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.profile-data dt:last-of-type,
+.profile-data dd:last-of-type {
+    border-bottom: none;
+}
+
+.profile-data dt {
+    color: #777;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding-right: 1.5rem;
+}
+
+.profile-data dd {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #1a1a1a;
+}
+
+.profile-form {
+    max-width: 26rem;
+}
+
+.profile-form .form-group {
+    margin-bottom: 1rem;
+}
+
 /* ── Registrar-se (login page) ──────────────────────── */
 
 .register-link-wrapper {

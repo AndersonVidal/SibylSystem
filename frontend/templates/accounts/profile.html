@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Perfil — SibylSystem{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Perfil</h1>
+
+<div class="card">
+    <h2 class="card-section-title">Dados da conta</h2>
+    <dl class="profile-data">
+        <dt>ID</dt>
+        <dd>{{ request.user.id }}</dd>
+
+        <dt>Usuário</dt>
+        <dd>{{ request.user.username }}</dd>
+
+        <dt>Nome</dt>
+        <dd>{{ request.user.first_name }} {{ request.user.last_name }}</dd>
+
+        <dt>E-mail</dt>
+        <dd>{{ request.user.email|default:"—" }}</dd>
+
+        <dt>Senha</dt>
+        <dd>Definida</dd>
+
+        <dt>Ativo</dt>
+        <dd>{{ request.user.is_active|yesno:"Sim,Não" }}</dd>
+
+        <dt>Staff</dt>
+        <dd>{{ request.user.is_staff|yesno:"Sim,Não" }}</dd>
+
+        <dt>Superusuário</dt>
+        <dd>{{ request.user.is_superuser|yesno:"Sim,Não" }}</dd>
+
+        <dt>Último login</dt>
+        <dd>{{ request.user.last_login|date:"d/m/Y H:i"|default:"—" }}</dd>
+
+        <dt>Membro desde</dt>
+        <dd>{{ request.user.date_joined|date:"d/m/Y H:i" }}</dd>
+
+        <dt>Grupos</dt>
+        <dd>
+            {% if request.user.groups.all %}
+                {% for g in request.user.groups.all %}{{ g.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            {% else %}
+                —
+            {% endif %}
+        </dd>
+
+        <dt>Permissões</dt>
+        <dd>
+            {% if request.user.user_permissions.all %}
+                {{ request.user.user_permissions.count }} permissão(ões)
+            {% else %}
+                —
+            {% endif %}
+        </dd>
+    </dl>
+</div>
+
+<div class="card">
+    <h2 class="card-section-title">Alterar senha</h2>
+
+    <form method="post" novalidate class="profile-form">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <p class="form-error">{{ form.non_field_errors|first }}</p>
+        {% endif %}
+
+        <div class="form-group">
+            <label for="{{ form.old_password.id_for_label }}">{{ form.old_password.label }}</label>
+            {{ form.old_password }}
+            {% if form.old_password.errors %}
+            <p class="form-error">{{ form.old_password.errors|first }}</p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.new_password1.id_for_label }}">{{ form.new_password1.label }}</label>
+            {{ form.new_password1 }}
+            {% if form.new_password1.errors %}
+            <p class="form-error">{{ form.new_password1.errors|first }}</p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.new_password2.id_for_label }}">{{ form.new_password2.label }}</label>
+            {{ form.new_password2 }}
+            {% if form.new_password2.errors %}
+            <p class="form-error">{{ form.new_password2.errors|first }}</p>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Alterar senha</button>
+    </form>
+</div>
+{% endblock %}

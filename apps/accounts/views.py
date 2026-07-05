@@ -1,5 +1,6 @@
-from django.contrib.auth import get_user_model, login
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import get_user_model, login, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.views import LoginView
 from django.http import Http404
 from django.shortcuts import redirect, render
@@ -64,4 +65,25 @@ def register(request):
             "show_register_modal": True,
             "user_exists": False,
         },
+    )
+
+
+@login_required
+def profile(request):
+    if not (request.user.is_staff and request.user.is_superuser):
+        raise Http404
+
+    if request.method == "POST":
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            return redirect("accounts:profile")
+    else:
+        form = PasswordChangeForm(request.user)
+
+    return render(
+        request,
+        "accounts/profile.html",
+        {"active_nav": "profile", "form": form},
     )
